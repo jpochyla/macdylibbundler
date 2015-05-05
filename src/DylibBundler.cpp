@@ -46,17 +46,26 @@ void changeLibPathsOnFile(std::string file_to_fix)
 
 void addDependency(std::string path)
 {
+    std::cout << "Considering dependency " << path << std::endl;
+
     Dependency dep(path);
-    
+
     // we need to check if this library was already added to avoid duplicates
     const int dep_amount = deps.size();
     for(int n=0; n<dep_amount; n++)
     {
-        if(dep.mergeIfSameAs(deps[n])) return;
+        if(dep.mergeIfSameAs(deps[n])) {
+            std::cout << "Already addded, skipping" << std::endl;
+            return;
+        }
     }
-    
-    if(!Settings::isPrefixBundled(dep.getPrefix())) return;
-    
+
+    if(!Settings::isPrefixBundled(dep.getPrefix())) {
+        std::cout << "Ignored, skipping" << std::endl;
+        return;
+    }
+
+    std::cout << "Adding dependency " << path << std::endl;
     deps.push_back(dep);
 }
 
