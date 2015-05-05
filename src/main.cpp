@@ -36,9 +36,9 @@ THE SOFTWARE.
  TODO
  - what happens if a library is not remembered by full path but only name? (support improved, still not perfect)
  - could get mixed up if symlink and original are not in the same location (won't happen for UNIX prefixes like /usr/, but in random directories?)
- 
+
  FIXME: why does it copy plugins i try to fix to the libs directory?
- 
+
  */
 
 const std::string VERSION = "0.4.1";
@@ -53,7 +53,7 @@ void showHelp()
 {
     std::cout << "dylibbundler " << VERSION << std::endl;
     std::cout << "dylibbundler is a utility that helps bundle dynamic libraries inside mac OS X app bundles.\n" << std::endl;
-    
+
     std::cout << "-x, --fix-file <file to fix (executable or app plug-in)>" << std::endl;
     std::cout << "-b, --bundle-deps" << std::endl;
     std::cout << "-d, --dest-dir <directory to send bundled libraries (relative to cwd)>" << std::endl;
@@ -67,8 +67,8 @@ void showHelp()
 
 int main (int argc, char * const argv[])
 {
-    
-    // parse arguments    
+
+    // parse arguments
     for(int i=0; i<argc; i++)
     {
         if(strcmp(argv[i],"-x")==0 or strcmp(argv[i],"--fix-file")==0)
@@ -80,7 +80,7 @@ int main (int argc, char * const argv[])
         else if(strcmp(argv[i],"-b")==0 or strcmp(argv[i],"--bundle-deps")==0)
         {
             Settings::bundleLibs(true);
-            continue;    
+            continue;
         }
         else if(strcmp(argv[i],"-p")==0 or strcmp(argv[i],"--install-path")==0)
         {
@@ -103,23 +103,23 @@ int main (int argc, char * const argv[])
         else if(strcmp(argv[i],"-of")==0 or strcmp(argv[i],"--overwrite-files")==0)
         {
             Settings::canOverwriteFiles(true);
-            continue;    
+            continue;
         }
         else if(strcmp(argv[i],"-od")==0 or strcmp(argv[i],"--overwrite-dir")==0)
         {
             Settings::canOverwriteDir(true);
             Settings::canCreateDir(true);
-            continue;    
+            continue;
         }
         else if(strcmp(argv[i],"-cd")==0 or strcmp(argv[i],"--create-dir")==0)
         {
             Settings::canCreateDir(true);
-            continue;    
+            continue;
         }
         else if(strcmp(argv[i],"-h")==0 or strcmp(argv[i],"--help")==0)
         {
             showHelp();
-            exit(0);    
+            exit(0);
         }
         else if(i>0)
         {
@@ -130,21 +130,21 @@ int main (int argc, char * const argv[])
             exit(1);
         }
     }
-    
+
     if(not Settings::bundleLibs() and Settings::fileToFixAmount()<1)
     {
         showHelp();
         exit(0);
     }
-    
+
     std::cout << "* Collecting dependencies"; fflush(stdout);
-    
+
     const int amount = Settings::fileToFixAmount();
     for(int n=0; n<amount; n++)
         collectDependencies(Settings::fileToFix(n));
-    
+
     collectSubDependencies();
     doneWithDeps_go();
-    
+
     return 0;
 }

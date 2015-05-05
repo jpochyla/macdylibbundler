@@ -82,13 +82,13 @@ bool isPrefixBundled(std::string prefix)
     if(prefix.find(".framework") != std::string::npos) return false;
     if(prefix.find("@executable_path") != std::string::npos) return false;
     if(prefix.compare("/usr/lib/") == 0) return false;
-    
+
     const int prefix_amount = prefixes_to_ignore.size();
     for(int n=0; n<prefix_amount; n++)
     {
         if(prefix.compare(prefixes_to_ignore[n]) == 0) return false;
     }
-    
+
     return true;
 }
 
