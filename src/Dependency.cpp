@@ -136,40 +136,42 @@ Dependency::Dependency(std::string path)
             }
         }
     }
-    
-    //If the location is still unknown, ask the user for search path
-    if( prefix.empty() || !fileExists( prefix+filename ) )
-    {
-        std::cerr << "\n/!\\ WARNING : Library " << filename << " has an incomplete name (location unknown)" << std::endl;
-        missing_prefixes = true;
-        
-        while (true)
-        {
-            std::cout << "Please specify now where this library can be found (or write 'quit' to abort): ";  fflush(stdout);
-            
-            char buffer[128];
-            std::cin >> buffer;
-            prefix = buffer;
-            std::cout << std::endl;
-            
-            if(prefix.compare("quit")==0) exit(1);
-            
-            if( !prefix.empty() && prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
-            
-            if( !fileExists( prefix+filename ) )
-            {
-                std::cerr << (prefix+filename) << " does not exist. Try again" << std::endl;
-                continue;
-            }
-            else
-            {
-                pathes.push_back( prefix );
-                std::cerr << (prefix+filename) << " was found. /!\\MANUALLY CHECK THE EXECUTABLE WITH 'otool -L', DYLIBBUNDLDER MAY NOT HANDLE CORRECTLY THIS UNSTANDARD/ILL-FORMED DEPENDENCY" << std::endl;
-                break;
-            }
-        }
-    }
-    
+
+    // //If the location is still unknown, ask the user for search path
+    // if( prefix.empty() || !fileExists( prefix+filename ) )
+    // {
+    //     std::cerr << "\n/!\\ WARNING : Library "
+    //               << (prefix+filename)
+    //               << " has an incomplete name (location unknown)" << std::endl;
+    //     missing_prefixes = true;
+
+    //     while (true)
+    //     {
+    //         std::cout << "Please specify now where this library can be found (or write 'quit' to abort): ";  fflush(stdout);
+
+    //         char buffer[128];
+    //         std::cin >> buffer;
+    //         prefix = buffer;
+    //         std::cout << std::endl;
+
+    //         if(prefix.compare("quit")==0) exit(1);
+
+    //         if( !prefix.empty() && prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
+
+    //         if( !fileExists( prefix+filename ) )
+    //         {
+    //             std::cerr << (prefix+filename) << " does not exist. Try again" << std::endl;
+    //             continue;
+    //         }
+    //         else
+    //         {
+    //             pathes.push_back( prefix );
+    //             std::cerr << (prefix+filename) << " was found. /!\\MANUALLY CHECK THE EXECUTABLE WITH 'otool -L', DYLIBBUNDLDER MAY NOT HANDLE CORRECTLY THIS UNSTANDARD/ILL-FORMED DEPENDENCY" << std::endl;
+    //             break;
+    //         }
+    //     }
+    // }
+
     //new_name  = filename.substr(0, filename.find(".")) + ".dylib";
     new_name = filename;
 }
